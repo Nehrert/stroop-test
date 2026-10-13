@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f0">
+<title>STROOP | Färg före ord</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#202e31;background:#f5f6f0;color-scheme:light}
+*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid #327ac6;outline-offset:3px}
+.wrap{width:min(100% - 36px,860px);margin:0 auto;padding:34px 0 48px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:48px;color:#52636d;font-size:18px;letter-spacing:.015em}
+.brand strong{color:#1b3038;font-weight:850}.version{border:1px solid #d0d8c9;border-radius:40px;padding:7px 15px;font-size:16px;color:#1c3036}
+.eyebrow{color:#52636d;letter-spacing:.13em;font-weight:750;font-size:15px;margin:0 0 32px}
+h1{font-size:clamp(3.05rem,7vw,4.6rem);letter-spacing:-.055em;line-height:1.08;margin:0 0 38px;max-width:580px;font-weight:830}p{line-height:1.5}.lead{font-size:clamp(1.15rem,2.4vw,1.65rem);margin:0 0 28px}.example{display:flex;align-items:center;gap:34px;background:#fff;border:1px solid #dae0d6;border-radius:23px;padding:26px 30px;min-height:128px}.example-word{font-size:clamp(2.5rem,5vw,3.2rem);font-weight:850;color:#c52538;letter-spacing:-.04em}.example-note{font-size:18px}.description{font-size:20px;margin:24px 0 32px}.pills{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:50px}.pill{background:#e6ebe2;border-radius:13px;padding:11px 17px;font-size:17px}.primary{width:100%;border:0;border-radius:16px;min-height:80px;padding:16px;background:#203d32;color:#fff;font-size:20px;font-weight:750}.primary:hover{background:#2c5142}.disclaimer{font-size:15px;color:#647780;margin:18px 0 0}.hidden{display:none!important}
+.test-top{display:flex;justify-content:space-between;gap:12px;color:#52636d;font-weight:700}.track{height:8px;border-radius:99px;background:#e1e8df;overflow:hidden;margin:17px 0 28px}.track-bar{height:100%;width:0;background:#203d32;transition:width .15s}.test-heading{text-align:center;margin:0 0 12px;font-size:clamp(1.08rem,2.5vw,1.5rem)}.stimulus{min-height:clamp(150px,26dvh,240px);height:auto;padding:22px 0 30px;display:grid;place-items:center;font-size:clamp(3.2rem,12vw,6.3rem);line-height:1.2;font-weight:850;letter-spacing:-.04em;user-select:none;overflow:visible}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.choice{min-height:82px;border:1px solid #d6ddd3;background:#fff;border-radius:17px;font-size:clamp(1.15rem,3vw,1.5rem);font-weight:750;color:#20312e}.choice:active{background:#e6ebe2}.hint{text-align:center;color:#647780;font-size:14px;margin:18px 0 0}.result{background:white;border:1px solid #dae0d6;border-radius:20px;padding:20px 26px;margin:20px 0 34px;font-size:18px}.result p{margin:12px 0}.result strong{font-variant-numeric:tabular-nums}
+@media(max-width:600px){.wrap{width:min(100% - 28px,860px);padding-top:19px}header{margin-bottom:37px;font-size:15px}.version{font-size:14px}.eyebrow{font-size:12px;margin-bottom:20px}h1{margin-bottom:28px}.lead{margin-bottom:22px}.example{gap:18px;padding:19px 16px;min-height:100px}.example-note{font-size:15px}.description{font-size:17px}.pills{margin-bottom:30px;gap:8px}.pill{font-size:14px;padding:9px 12px}.primary{min-height:68px}.choice{min-height:68px}.stimulus{min-height:clamp(140px,24dvh,185px);padding:16px 0 24px}}
+@media(max-height:650px){.wrap{padding-top:10px}header{margin-bottom:20px}.track{margin:10px 0 12px}.stimulus{min-height:0;padding:12px 0 18px;font-size:clamp(2.8rem,10vw,5.2rem)}.choice{min-height:55px}.choices{gap:8px}.hint{margin-top:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand"><strong>STROOP</strong> / Färg före ord</div><span class="version">0.3</span></header>
+<main>
+<section id="intro" aria-labelledby="introTitle">
+<p class="eyebrow">ETT EXPERIMENT MED DIN UPPMÄRKSAMHET</p>
+<h1 id="introTitle">Vilken färg<br>har ordet?</h1>
+<p class="lead">Tryck på ordets <strong>textfärg</strong> - oavsett vad det står.</p>
+<div class="example"><span class="example-word">BLÅ</span><span class="example-note">Här är rätt svar <strong>Röd.</strong></span></div>
+<p class="description">Svara så snabbt och rätt du kan. Knapparna ligger alltid på samma plats.</p>
+<div class="pills"><span class="pill">4 övningsförsök</span><span class="pill">20 testförsök</span></div>
+<button class="primary" id="start" type="button">Prova först →</button>
+<p class="disclaimer">En pedagogisk demonstration, inte ett diagnostiskt test. Inga resultat sparas eller skickas.</p>
+</section>
+<section id="test" class="hidden" aria-label="Pågående Stroop-test">
+<div class="test-top"><span id="counter">Övning 1 av 4</span><span>Välj textfärgen</span></div>
+<div class="track" aria-hidden="true"><div id="progressBar" class="track-bar"></div></div>
+<p class="test-heading">Vilken färg har ordet?</p>
+<div id="word" class="stimulus" aria-label="Färgord"></div>
+<div class="choices" id="choices" aria-label="Svarsalternativ">
+<button class="choice" type="button" data-answer="röd">Röd</button>
+<button class="choice" type="button" data-answer="blå">Blå</button>
+<button class="choice" type="button" data-answer="grön">Grön</button>
+<button class="choice" type="button" data-answer="gul">Gul</button>
+</div><p class="hint" id="phaseNote">Övning - svaren räknas inte in i resultatet.</p>
+</section>
+<section id="transition" class="hidden" aria-labelledby="transitionTitle">
+<p class="eyebrow">ÖVNINGSOMGÅNGEN ÄR KLAR</p><h1 id="transitionTitle">Redo för testet?</h1>
+<p class="lead">Nu följer 20 testförsök. Svara så snabbt och rätt du kan.</p>
+<button class="primary" id="beginTest" type="button">Starta testet →</button>
+</section>
+<section id="end" class="hidden" aria-labelledby="endTitle">
+<p class="eyebrow">TESTET ÄR KLART</p><h1 id="endTitle">Ditt resultat</h1>
+<div class="result" id="results" aria-live="polite"></div>
+<button class="primary" id="again" type="button">Gör om testet →</button>
+<p class="disclaimer">Tiderna mäts i webbläsaren. Resultatet är inte ett normerat psykologiskt test.</p>
+</section>
+</main></div>
+<script>
+(()=>{'use strict';
+const COLORS=[{name:'röd',word:'RÖD',ink:'#c52538'},{name:'blå',word:'BLÅ',ink:'#1564c0'},{name:'grön',word:'GRÖN',ink:'#158443'},{name:'gul',word:'GUL',ink:'#FFFF00'}];
+const PRACTICE=4,TOTAL=20,el=id=>document.getElementById(id);
+let trials=[],index=0,startedAt=0,responses=[],accepting=false,phase='practice';
+function shuffle(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function buildTrials(total){const a=[];for(let i=0;i<total;i++){const ink=COLORS[i%COLORS.length];const congruent=i<total/2;const alternatives=COLORS.filter(c=>c.name!==ink.name);const label=congruent?ink:alternatives[Math.floor(Math.random()*alternatives.length)];a.push({ink,label,congruent})}return shuffle(a)}
+function show(which){['intro','test','transition','end'].forEach(id=>el(id).classList.toggle('hidden',id!==which))}
+function next(){if(index===trials.length){if(phase==='practice'){show('transition');el('beginTest').focus()}else finish();return}
+accepting=false;const trial=trials[index];el('counter').textContent=phase==='practice'?`Övning ${index+1} av ${PRACTICE}`:`Uppgift ${index+1} av ${TOTAL}`;el('phaseNote').textContent=phase==='practice'?'Övning - svaren räknas inte in i resultatet.':'Testomgång - välj textens färg.';el('progressBar').style.width=`${100*index/trials.length}%`;el('word').textContent=trial.label.word;el('word').style.color=trial.ink.ink;requestAnimationFrame(()=>requestAnimationFrame(()=>{startedAt=performance.now();accepting=true}))}
+function begin(which){phase=which;trials=buildTrials(which==='practice'?PRACTICE:TOTAL);index=0;responses=[];show('test');next()}
+function answer(color){if(!accepting)return;accepting=false;const elapsed=performance.now()-startedAt,trial=trials[index];if(phase==='test')responses.push({correct:color===trial.ink.name,ms:elapsed,congruent:trial.congruent});index++;next()}
+function average(items){return items.length?`${(items.reduce((s,r)=>s+r.ms,0)/items.length/1000).toFixed(2).replace('.',',')} s`:'-'}
+function finish(){const correct=responses.filter(r=>r.correct),same=correct.filter(r=>r.congruent),different=correct.filter(r=>!r.congruent);const rows=[['Rätt svar',`${correct.length} av ${TOTAL}`],['Genomsnittlig svarstid (rätt svar)',average(correct)],['Samma ord och färg (rätt svar)',average(same)],['Olika ord och färg (rätt svar)',average(different)]];el('results').replaceChildren();for(const [label,value] of rows){const p=document.createElement('p');p.append(document.createTextNode(label+': '));const strong=document.createElement('strong');strong.textContent=value;p.append(strong);el('results').append(p)}show('end');el('again').focus()}
+el('start').addEventListener('click',()=>begin('practice'));el('beginTest').addEventListener('click',()=>begin('test'));el('again').addEventListener('click',()=>begin('practice'));el('choices').addEventListener('click',event=>{const button=event.target.closest('button[data-answer]');if(button)answer(button.dataset.answer)});
+})();
+</script>
+</body></html>
